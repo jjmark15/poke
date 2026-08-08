@@ -116,13 +116,11 @@ func TestHealthDuringSlowPoke(t *testing.T) {
 
 	srv := newServer(s, testLogger(t))
 	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		req := httptest.NewRequest(http.MethodPost, "/poke", nil)
 		rec := httptest.NewRecorder()
 		srv.ServeHTTP(rec, req)
-	}()
+	})
 	time.Sleep(30 * time.Millisecond)
 
 	req := httptest.NewRequest(http.MethodGet, "/health", nil)

@@ -205,8 +205,7 @@ func (s *supervisor) onExit(cmd *exec.Cmd, err error) {
 		s.log.printf("child exited code=0")
 		return
 	}
-	var ee *exec.ExitError
-	if errors.As(err, &ee) {
+	if ee, ok := errors.AsType[*exec.ExitError](err); ok {
 		if status, ok := ee.Sys().(syscall.WaitStatus); ok {
 			if status.Signaled() {
 				s.log.printf("child exited signal=%s", status.Signal())
