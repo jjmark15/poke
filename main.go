@@ -44,7 +44,7 @@ func run(args []string) int {
 	}
 
 	sigCh := make(chan os.Signal, 2)
-	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT)
 
 	sig := <-sigCh
 	log.printf("received %s", sig)
